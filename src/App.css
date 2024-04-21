@@ -1,38 +1,190 @@
-.App {
-  text-align: center;
+body {
+  font-family: 'Cabin', monospace;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+a {
+  text-decoration: none;
+  color: black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* .sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  animation-duration: 0.7s;
+  animation-name: fadeInDown;
+  animation-timing-function: ease-out;
+} */
+
+.logo-aura {
+  display: flex;
+  justify-content: center; /* Horizontally centers items */
+}
+
+.logo-aura img {
+  width: 80px;
+  /* You can remove 'display: inline-block;' */
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: beige;
+  padding: 5px 15px 5px 10px
+  /* box-shadow: 0 5px 15px rgb(0,0,0,0.2);  */
+}
+
+#navbar-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#navbar-links li {
+  list-style: none;
+  padding: 0 15px;
+}
+
+#navbar-links li a {
+  text-decoration: none;
+  color: black;
+}
+
+#mobile {
+  display: none;
+}
+
+@media screen and (max-width:768px) {
+  #navbar-links{
+    display: none;
+  }
+}
+
+
+
+
+.catalogue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content:space-around
+}
+
+
+
+.product-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  width: 20rem;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 2px 2px 5px 0px rgba(0, 64, 128, 0.1);
+  margin: 25px;
+}
+
+.product-card__image {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-card__description,
+.product-card__price,
+.product-card__brand {
+  margin: 0.2rem 0;
+  font-size: 1rem;
+}
+
+.product-card__brand {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: grey;
+}
+
+.product-card__title {
+  font-weight: normal;
+  font-size: 1.2rem;
+
+}
+
+#product-card__price {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+#product-card__fullprice {
+  font-weight: bold;
+  font-size: 1rem;  
+  color: red;
+}
+
+.product-card__btn-wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  border: none;
+  background-color: white;
+  padding: 12px 10px 10px;
+  box-shadow: 2px 2px 5px 0px rgba(0, 64, 128, 0.1);
+}
+
+.product-card__btn-wishlist svg {
+  fill: lightgrey;
+}
+
+
+#product-card-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 90%;
+}
+
+.product-card-name-div{
+  max-width: 60%;
+}
+
+.filter-bar {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#search-div {
+  justify-content: center;
+  display: flex;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#search-button {
+  margin-left: 10px;
+  margin-right: 10px;
 }
