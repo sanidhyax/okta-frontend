@@ -7,7 +7,7 @@ const ProductList = (props) => {
 
     const listProducts = () => {
         if (products.length > 0){
-            return products.map((p) => <ProductCard key={p.id} image={p.images[0]} title={p.title} brand={p.brand} price={p.price} discountedPrice={p.discountedPrice}/>)
+            return products.map((p) => <ProductCard key={p.id} image={p.images[0]} title={p.title} brand={p.brand} price={p.price} discountedPrice={p.discountedPrice} rating={p.rating} id={p.id}/>)
         } else {
             return "No Products"
         }

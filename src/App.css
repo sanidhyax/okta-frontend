@@ -66,11 +66,9 @@ a {
   display: none;
 }
 
-@media screen and (max-width:768px) {
-  #navbar-links{
-    display: none;
-  }
-}
+/* @media screen and (max-width:768px) {
+
+} */
 
 
 
