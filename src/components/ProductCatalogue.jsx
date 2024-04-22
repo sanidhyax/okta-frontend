@@ -67,6 +67,14 @@ export const ProductCatalogue = () => {
             });
     };
 
+    const injectDiscountedPrice = (products) => {
+        return products.map(p => {
+        const discountedPrice = p.price - ((p.discountPercentage / 100) * p.price);
+        const num = parseFloat(discountedPrice.toFixed(2)); // Round to 2 digits
+        return {...p, discountedPrice: num};
+        })
+    }
+
     const getProducts = async (url, skip, limit) => {
         dispatch(setPageLoading(true));
         try{
@@ -77,15 +85,15 @@ export const ProductCatalogue = () => {
             }
         });
         const data = response.data;
-        console.log(data)
-        dispatch(loadProducts(data));
+        var prods = injectDiscountedPrice(data.products)
+        dispatch(loadProducts({...data, products: prods}));
         window.scrollTo(0, 0);
-        setFilteredProducts([...data.products]);
+        setFilteredProducts([...prods]);
         setSearchParam('')
         dispatch(setPageLoading(false));
         } catch (e) {
             setError(true)
-            console.log("SOME ERROR OCCURRED")
+            console.log("SOME ERROR OCCURRED", e)
         }
     }
 
@@ -108,9 +116,9 @@ export const ProductCatalogue = () => {
     
     const sortProducts = (sortBy, prods) => {
         if (sortBy === 'hightolow') {
-            return prods.sort((a, b) => a.price - b.price); // Sort low to high
+            return prods.sort((a, b) => a.discountedPrice - b.discountedPrice); // Sort low to high
         } else if (sortBy === 'lowtohigh') {
-            return prods.sort((a, b) => b.price - a.price); // Sort high to low
+            return prods.sort((a, b) => b.discountedPrice - a.discountedPrice); // Sort high to low
         } else {
             return prods.sort((a, b) => a.title.localeCompare(b.title));
         }
@@ -135,7 +143,7 @@ export const ProductCatalogue = () => {
     const handleSearchParamChange = (param) => {
         setSearchParam(param)
         if(param !== ''){
-            const searched = filteredProducts.filter(p => p.title.includes(param));
+            const searched = filteredProducts.filter(p => p.title.toLowerCase().includes(param.toLowerCase()));
             setLocalSearchresults(searched)
         } else {
             setLocalSearchresults([])
@@ -147,8 +155,6 @@ export const ProductCatalogue = () => {
     }
 
     const filterProducts = (brand, category) => {
-        console.log(brand, category)
-        console.log(products)
         const classifed = products.filter(p => {
             if (brand !== "" && p.brand !== brand) return false
             if (category !== "" && p.category !== category) return false
@@ -157,8 +163,6 @@ export const ProductCatalogue = () => {
         console.log(classifed)
         setFilteredProducts([...classifed])
     }
-
-
 
     return (
 

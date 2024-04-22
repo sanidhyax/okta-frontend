@@ -4,12 +4,22 @@ const initialState = {
     products: [],
     categories: [],
     brands: [],
+    isPageLoading:false,
     pagination: {
         total: 0,
         skip: 0,
         limit: 10,
     }
 }
+
+// const injectDiscountedPrice = (products) => {
+//     return products.map(p => {
+//     const discountedPrice = p.price - ((p.discountPercentage / 100) * p.price);
+//     const num = parseFloat(discountedPrice.toFixed(2)); // Round to 2 digits
+//     return {...p, discountedPrice: num};
+//     })
+// }
+
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
