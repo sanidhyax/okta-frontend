@@ -31,6 +31,7 @@ export const ProductCatalogue = () => {
     const [filteredProducts, setFilteredProducts] = useState([])
     const [searchParam, setSearchParam] = useState('')
     const [localSearchResults, setLocalSearchresults] = useState([])
+    const [error, setError] = useState(false)
 
     const url = "https://dummyjson.com/products"
     const categoriesURL = "https://dummyjson.com/products/categories"
@@ -83,6 +84,7 @@ export const ProductCatalogue = () => {
         setSearchParam('')
         dispatch(setPageLoading(false));
         } catch (e) {
+            setError(true)
             console.log("SOME ERROR OCCURRED")
         }
     }
@@ -105,9 +107,9 @@ export const ProductCatalogue = () => {
 
     
     const sortProducts = (sortBy, prods) => {
-        if (sortBy === 'lowtohigh') {
+        if (sortBy === 'hightolow') {
             return prods.sort((a, b) => a.price - b.price); // Sort low to high
-        } else if (sortBy === 'hightolow') {
+        } else if (sortBy === 'lowtohigh') {
             return prods.sort((a, b) => b.price - a.price); // Sort high to low
         } else {
             return prods.sort((a, b) => a.title.localeCompare(b.title));
@@ -156,7 +158,10 @@ export const ProductCatalogue = () => {
         setFilteredProducts([...classifed])
     }
 
+
+
     return (
+
         <div>
             <Search searchParam={searchParam}
                 handleSearchParamChange={(e) => handleSearchParamChange(e.target.value)}
@@ -172,11 +177,12 @@ export const ProductCatalogue = () => {
                     handleBrandChange={(val) => handleBrandChange(val.target.value)}
                 />
             </div>
+
             <div>
                 <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
-                <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults:filteredProducts)} />
+                {error ? <div>SOME ERROR OCCURRED </div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults:filteredProducts)} />}
                 <div className="pagination">
                     <Pagination
                         count={Math.ceil(pagination.total / 10)}
