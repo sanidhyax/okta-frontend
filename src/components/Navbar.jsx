@@ -2,12 +2,24 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Aura from '../assets/Okta_Aura_Black_S.png'
 import '../App.css';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export const Navbar = () => {
+	const { user, isAuthenticated, isLoading, loginWithRedirect, logout } = useAuth0();
+
 	const [sideBarOpen, setSideBarOpen] = useState(false)
 
 	const handleSideBarClick = () => {
 		setSideBarOpen(!sideBarOpen)
+	}
+
+	const authButton = () => {
+		if (!isAuthenticated){
+			return <li><a href="" onClick={()=> loginWithRedirect()}>Login</a></li>
+		} else {
+			return <li><strong>{user.name}</strong><a href="" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}> - Logout</a></li>
+		}
 	}
 
 	return (
@@ -18,9 +30,7 @@ export const Navbar = () => {
 				</div>
 				<div>
 					<ul id="navbar-links">
-						<li><a href="">Home</a></li>
-						<li><a href="">Wishlist</a></li>
-						<li><a href="">Cart</a></li>
+					{authButton()}
 					</ul>
 				</div>
 				<div id="mobile" onClick={handleSideBarClick}>

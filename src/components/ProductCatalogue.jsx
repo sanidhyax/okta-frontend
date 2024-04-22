@@ -10,8 +10,6 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Search from "./Search";
 
-
-
 export const ProductCatalogue = () => {
 
     const defaultFilters = {
@@ -165,7 +163,6 @@ export const ProductCatalogue = () => {
     }
 
     return (
-
         <div>
             <Search searchParam={searchParam}
                 handleSearchParamChange={(e) => handleSearchParamChange(e.target.value)}
