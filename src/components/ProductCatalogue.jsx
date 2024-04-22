@@ -3,7 +3,7 @@ import '../App.css';
 import { FilterBar } from "./FilterBar";
 import Pagination from '@mui/material/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCategories, loadProducts, setPageLoading } from "../redux/actions";
+import { loadCategories, loadProducts, setPageLoading , loadBrands} from "../redux/actions";
 import ProductList from "./ProductList";
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
@@ -23,6 +23,7 @@ export const ProductCatalogue = () => {
     const dispatch = useDispatch()
     const products = useSelector((state) => state.products)
     const categories = useSelector(state => state.categories)
+    const brands = useSelector(state => state.brands)
     const pagination = useSelector(state => state.pagination)
     const isLoading = useSelector(state => state.isPageLoading)
 
@@ -32,12 +33,15 @@ export const ProductCatalogue = () => {
 
     const url = "https://dummyjson.com/products"
     const categoriesURL = "https://dummyjson.com/products/categories"
-
+    const searchUrl = "https://dummyjson.com/products/search"
+    const brandUrl = "http://extenddummyjson-latest.onrender.com/brands"
 
     useEffect(() => {
         getCategories(categoriesURL)
+        getBrands(brandUrl)
         console.log(pagination)
-        getProducts(url, pagination.skip, pagination.limit, '')
+        getProducts(url, pagination.skip, pagination.limit)
+        
     }, [])
 
     const getCategories = (url) => {
@@ -50,7 +54,34 @@ export const ProductCatalogue = () => {
             });
     };
 
-    const getProducts = async (url, skip, limit, searchQuery) => {
+    const getBrands = (url) => {
+        axios.get(url)
+            .then(response => {
+                console.log("GETTING")
+                console.log(response.data)
+                dispatch(loadBrands(response.data));
+            })
+            .catch(error => {
+                console.error('Error fetching brands:', error);
+            });
+    };
+
+    const getProducts = async (url, skip, limit) => {
+        dispatch(setPageLoading(true));
+        const response = await axios.get(url, {
+            params: {
+                limit: limit,
+                skip: skip,
+            }
+        });
+        const data = response.data;
+        console.log(data)
+        dispatch(loadProducts(data));
+        window.scrollTo(0, 0);
+        setFilteredProducts(data.products);
+    };
+
+    const searchProducts = async (url, skip, limit, searchQuery) => {
         dispatch(setPageLoading(true));
         const response = await axios.get(url, {
             params: {
@@ -62,14 +93,14 @@ export const ProductCatalogue = () => {
         const data = response.data;
         console.log(data)
         dispatch(loadProducts(data));
-        dispatch(setPageLoading(false));
-        // setFilteredProducts(data.products);
         window.scrollTo(0, 0);
+        setFilteredProducts(data.products);
     };
 
     const handlePageChange = (event, page) => {
-        console.log(page)
-        getProducts(url, (page - 1) * 10, pagination.limit, '')
+        if (searchParam != '')
+    {   console.log(page)
+        getProducts(url, (page - 1) * 10, pagination.limit)}
     }
 
     const sortProducts = (sortBy, prods) => {
@@ -82,7 +113,7 @@ export const ProductCatalogue = () => {
         }
     };
 
-    const brands = ['Apple', 'Samsung']
+
 
     const handleSorting = (sortBy) => {
         setActiveFilters({ ...activeFilters, sortBy })
@@ -101,7 +132,8 @@ export const ProductCatalogue = () => {
         setSearchParam(param)
     }
     const handleSearchClick = () => {
-        getProducts(url, 0, pagination.limit, searchParam)
+        if (searchParam != '')
+        searchProducts(url, 0, pagination.limit, searchParam)
     }
 
     const filterProducts = (brand, category) => {

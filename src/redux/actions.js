@@ -1,7 +1,6 @@
 export const LOAD_PRODUCTS = "LOAD_PRODUCTS"
 export const LOAD_CATEGORIES = "LOAD_CATEGORIES"
-export const SET_CATEGORY = "SET_CATEGORY"
-export const SET_BRAND = "SET_BRAND"
+export const LOAD_BRANDS = "LOAD_BRANDS"
 export const PAGE_LOADING = "PRODUCTS_LOADING"
 
 export const loadProducts = (data) => {
@@ -14,7 +13,14 @@ export const loadProducts = (data) => {
 export const loadCategories = (categories) => {
     return {
         type: LOAD_CATEGORIES,
-        categories
+        categories,
+    }
+}
+
+export const loadBrands = (brands) => {
+    return {
+        type: LOAD_BRANDS,
+        brands,
     }
 }
 

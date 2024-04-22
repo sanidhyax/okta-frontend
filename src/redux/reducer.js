@@ -1,5 +1,4 @@
-import React from "react";
-import { LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING } from "./actions";
+import { LOAD_BRANDS, LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING } from "./actions";
 
 const initialState = {
     products: [],
@@ -19,7 +18,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.data.products,
-                filteredProducts: action.products,
+                isPageLoading:false,
                 pagination: {
                     limit: action.data.limit,
                     total: action.data.total,
@@ -30,6 +29,8 @@ const reducer = (state = initialState, action) => {
             return { ...state, categories: action.categories }
         case PAGE_LOADING:
             return { ...state, isPageLoading: action.isLoading }
+        case LOAD_BRANDS:
+            return {...state, brands: action.brands}
         default:
             return state
     }
