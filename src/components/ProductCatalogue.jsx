@@ -30,6 +30,7 @@ export const ProductCatalogue = () => {
     const [activeFilters, setActiveFilters] = useState(defaultFilters)
     const [filteredProducts, setFilteredProducts] = useState([])
     const [searchParam, setSearchParam] = useState('')
+    const [localSearchResults, setLocalSearchresults] = useState([])
 
     const url = "https://dummyjson.com/products"
     const categoriesURL = "https://dummyjson.com/products/categories"
@@ -41,7 +42,6 @@ export const ProductCatalogue = () => {
         getBrands(brandUrl)
         console.log(pagination)
         getProducts(url, pagination.skip, pagination.limit)
-        
     }, [])
 
     const getCategories = (url) => {
@@ -68,6 +68,7 @@ export const ProductCatalogue = () => {
 
     const getProducts = async (url, skip, limit) => {
         dispatch(setPageLoading(true));
+        try{
         const response = await axios.get(url, {
             params: {
                 limit: limit,
@@ -78,31 +79,31 @@ export const ProductCatalogue = () => {
         console.log(data)
         dispatch(loadProducts(data));
         window.scrollTo(0, 0);
-        setFilteredProducts(data.products);
-    };
-
-    const searchProducts = async (url, skip, limit, searchQuery) => {
-        dispatch(setPageLoading(true));
-        const response = await axios.get(url, {
-            params: {
-                limit: limit,
-                skip: skip,
-                q: searchQuery
-            }
-        });
-        const data = response.data;
-        console.log(data)
-        dispatch(loadProducts(data));
-        window.scrollTo(0, 0);
-        setFilteredProducts(data.products);
-    };
-
-    const handlePageChange = (event, page) => {
-        if (searchParam != '')
-    {   console.log(page)
-        getProducts(url, (page - 1) * 10, pagination.limit)}
+        setFilteredProducts([...data.products]);
+        setSearchParam('')
+        dispatch(setPageLoading(false));
+        } catch (e) {
+            console.log("SOME ERROR OCCURRED")
+        }
     }
 
+    // const searchProducts = async (url, skip, limit, searchQuery) => {
+    //     dispatch(setPageLoading(true));
+    //     const response = await axios.get(url, {
+    //         params: {
+    //             limit: limit,
+    //             skip: skip,
+    //             q: searchQuery
+    //         }
+    //     });
+    //     const data = response.data;
+    //     console.log(data)
+    //     dispatch(loadProducts(data));
+    //     window.scrollTo(0, 0);
+    //     setFilteredProducts([...data.products]);
+    // };
+
+    
     const sortProducts = (sortBy, prods) => {
         if (sortBy === 'lowtohigh') {
             return prods.sort((a, b) => a.price - b.price); // Sort low to high
@@ -112,37 +113,47 @@ export const ProductCatalogue = () => {
             return prods.sort((a, b) => a.title.localeCompare(b.title));
         }
     };
-
-
+    
+    const handlePageChange = (event, page) => {
+        getProducts(url, (page - 1) * 10, pagination.limit)
+    }
 
     const handleSorting = (sortBy) => {
         setActiveFilters({ ...activeFilters, sortBy })
-        setFilteredProducts(sortProducts(sortBy, filteredProducts))
+        setFilteredProducts([...sortProducts(sortBy, filteredProducts)])
     }
     const handleBrandChange = (brand) => {
         setActiveFilters({ ...activeFilters, brand })
         filterProducts(brand, activeFilters.category)
     }
     const handleCategoryChange = (category) => {
-        console.log()
         setActiveFilters({ ...activeFilters, category })
         filterProducts(activeFilters.brand, category)
     }
     const handleSearchParamChange = (param) => {
         setSearchParam(param)
+        if(param !== ''){
+            const searched = filteredProducts.filter(p => p.title.includes(param));
+            setLocalSearchresults(searched)
+        } else {
+            setLocalSearchresults([])
+        }
     }
     const handleSearchClick = () => {
-        if (searchParam != '')
-        searchProducts(url, 0, pagination.limit, searchParam)
+        // if (searchParam != '')
+        // searchProducts(url, 0, pagination.limit, searchParam)
     }
 
     const filterProducts = (brand, category) => {
+        console.log(brand, category)
+        console.log(products)
         const classifed = products.filter(p => {
             if (brand !== "" && p.brand !== brand) return false
             if (category !== "" && p.category !== category) return false
             return true
         })
-        setFilteredProducts(classifed)
+        console.log(classifed)
+        setFilteredProducts([...classifed])
     }
 
     return (
@@ -165,7 +176,7 @@ export const ProductCatalogue = () => {
                 <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
-                <ProductList products={sortProducts(activeFilters.sortBy, filteredProducts)} />
+                <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults:filteredProducts)} />
                 <div className="pagination">
                     <Pagination
                         count={Math.ceil(pagination.total / 10)}

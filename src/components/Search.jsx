@@ -12,7 +12,7 @@ const Search = (props) => {
                 <Input
                     value={searchParam}
                     onChange={handleSearchParamChange}
-                    placeholder="Search..."
+                    placeholder="Local Search..."
                     fullWidth
                     startAdornment={
                         <InputAdornment position="start">

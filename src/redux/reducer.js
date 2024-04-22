@@ -4,7 +4,6 @@ const initialState = {
     products: [],
     categories: [],
     brands: [],
-    isPageLoading: true,
     pagination: {
         total: 0,
         skip: 0,
@@ -18,6 +17,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.data.products,
+                filteredProducts: action.data.products,
                 isPageLoading:false,
                 pagination: {
                     limit: action.data.limit,

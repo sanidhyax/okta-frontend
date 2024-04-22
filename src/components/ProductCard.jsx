@@ -18,7 +18,7 @@ const ProductCard = (props) => {
                     <p className="product-card__brand">{brand}</p>
                     <p className="product-card__title">{title}</p>
                 </div>
-                <div className=""product-card-price-div>
+                <div className="product-card-price-div">
                     <p id="product-card__fullprice">$<s>{price}</s></p>
                     <p id="product-card__price">${calculateDiscountedPrice(price, discount)}</p>
                 </div>
