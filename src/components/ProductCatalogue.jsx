@@ -34,7 +34,7 @@ export const ProductCatalogue = () => {
     const url = "https://dummyjson.com/products"
     const categoriesURL = "https://dummyjson.com/products/categories"
     const searchUrl = "https://dummyjson.com/products/search"
-    const brandUrl = "http://extenddummyjson-latest.onrender.com/brands"
+    const brandUrl = "https://extenddummyjson-latest.onrender.com/brands"
 
     useEffect(() => {
         getCategories(categoriesURL)
