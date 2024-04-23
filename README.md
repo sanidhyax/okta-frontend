@@ -9,12 +9,12 @@ This is a basic products catalogue display with categories and brands filtering 
 The product details can be viewed by clicking the product card.  
 
 The application consumes two different service endpoints to get the required data to fit in with the assessment task. 
-1. [dummyjson.com](dummyjson.com)  
+1. [dummyjson.com](https://dummyjson.com)  
 I've used the original dummyjson.com endpoints to get 
     1. all the products (dummyjson.com/products)
     2. get all categories (dummyjson.com/products/categories)
     3. get all products of a category (dummyjson.com/products/categories/{category})
-2. [extenddummyjson-latest.onrender.com](extenddummyjson-latest.onrender.com)  
+2. [extenddummyjson-latest.onrender.com](https://extenddummyjson-latest.onrender.com)  
 This is a backend service that is developed by me on java and springboot and it extends the dummyjson.com/products api by exposing two new endpoints.  
     1. '/products/brands'  
     Which returns the list of all brands (which it parses from the original products list)
