@@ -3,6 +3,7 @@ export const LOAD_CATEGORIES = "LOAD_CATEGORIES"
 export const LOAD_BRANDS = "LOAD_BRANDS"
 export const PAGE_LOADING = "PRODUCTS_LOADING"
 export const SET_FILTERED_PRODUCTS = "SET_FILTERED_PRODUCTS"
+export const SET_ACTIVE_PRODUCT = "SET_ACTIVE_PRODUCT"
 
 export const loadProducts = (data) => {
     return {
@@ -32,9 +33,9 @@ export const setPageLoading = (isLoading) => {
     }
 }
 
-// export const setFilteredProducts = (filteredProducts) => {
-//     return {
-//         type:SET_FILTERED_PRODUCTS,
-//         filteredProducts
-//     }
-// }
+export const setActiveProduct = (product) => {
+    return {
+        type:SET_ACTIVE_PRODUCT,
+        product
+    }
+}

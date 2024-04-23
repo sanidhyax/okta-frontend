@@ -1,8 +1,9 @@
-import { LOAD_BRANDS, LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING } from "./actions";
+import { LOAD_BRANDS, LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING, SET_ACTIVE_PRODUCT } from "./actions";
 
 const initialState = {
     products: [],
     categories: [],
+    activeProduct:null,
     brands: [],
     isPageLoading:false,
     pagination: {
@@ -29,6 +30,7 @@ const reducer = (state = initialState, action) => {
                 products: action.data.products,
                 filteredProducts: action.data.products,
                 isPageLoading:false,
+                activeProduct:null,
                 pagination: {
                     limit: action.data.limit,
                     total: action.data.total,
@@ -41,6 +43,8 @@ const reducer = (state = initialState, action) => {
             return { ...state, isPageLoading: action.isLoading }
         case LOAD_BRANDS:
             return {...state, brands: action.brands}
+        case SET_ACTIVE_PRODUCT:
+            return {...state, activeProduct:action.product}
         default:
             return state
     }
