@@ -108,10 +108,11 @@ export const ProductCatalogue = () => {
             window.scrollTo(0, 0);
             setFilteredProducts([...prods]);
             setSearchParam('')
-            dispatch(setPageLoading(false));
         } catch (e) {
             setError(true)
             console.log("SOME ERROR OCCURRED", e)
+        } finally {
+            dispatch(setPageLoading(false));
         }
     }
 
