@@ -78,8 +78,10 @@ export const ProductCatalogue = () => {
 
     const getProductsByCategoryAndBrand = async (category, brand) => {
         let finalUrl;
-
-        if (category !== '' && brand !== '') {
+        if (category === '' && brand ===''){
+            finalUrl = url;
+        }
+        else if (category !== '' && brand !== '') {
             finalUrl = baseUrlForNewEndpoint + `/category/${category}/brand/${brand}`
         }
         else if (category !== '') {
