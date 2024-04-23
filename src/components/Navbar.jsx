@@ -15,8 +15,8 @@ export const Navbar = () => {
 	}
 
 	const authButton = () => {
-		if (!isAuthenticated){
-			return <li><a href="" onClick={()=> loginWithRedirect()}>Login</a></li>
+		if (!isAuthenticated) {
+			return <li><a href="" onClick={() => loginWithRedirect()}>Login</a></li>
 		} else {
 			return <li><strong>{user.name}</strong><a href="" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}> - Logout</a></li>
 		}
@@ -30,11 +30,11 @@ export const Navbar = () => {
 				</div>
 				<div>
 					<ul id="navbar-links">
-					{authButton()}
+						{authButton()}
 					</ul>
 				</div>
 				<div id="mobile" onClick={handleSideBarClick}>
-					<i className={sideBarOpen ? "fas fa-times" :"fas fa-bars"} />
+					<i className={sideBarOpen ? "fas fa-times" : "fas fa-bars"} />
 				</div>
 			</nav>
 		</div>

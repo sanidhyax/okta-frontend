@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Product Catalogue App with Product Display  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Web Application built on React+Redux
 
-## Available Scripts
+Access it on [https://cosmic-druid-28d7d7.netlify.app/](https://cosmic-druid-28d7d7.netlify.app/)  
 
-In the project directory, you can run:
+## Overview  
+This is a basic products catalogue display with categories and brands filtering and a local search feature.
+The product details can be viewed by clicking the product card.  
 
-### `npm start`
+The application consumes two different service endpoints to get the required data to fit in with the assessment task. 
+1. [dummyjson.com](dummyjson.com)  
+I've used the original dummyjson.com endpoints to get 
+    1. all the products (dummyjson.com/products)
+    2. get all categories (dummyjson.com/products/categories)
+    3. get all products of a category (dummyjson.com/products/categories/{category})
+2. [extenddummyjson-latest.onrender.com](extenddummyjson-latest.onrender.com)  
+This is a backend service that is developed by me on java and springboot and it extends the dummyjson.com/products api by exposing two new endpoints.  
+    1. '/products/brands'  
+    Which returns the list of all brands (which it parses from the original products list)
+    2. '/products/brand/{brandName}'  
+    This acts similar to the one in dummyjson and returns all products under that brand
+    3. '/products/category/{category}/brand/{brandName}'  
+    This endpoint is used when we have both filters active. I originally wanted to use RequestParams for this but then decided to go ahead with extending the facility similar to that of dummyjson.com
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    >The backend is hosted on render and can be accessed using the above link but the initial load may be a minute long as render spins down the deployment after inactivity.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Run the application
+1. Clone the repo  
+2. Make sure you have node installed
+3. Perform `npm clean install`
+4. Run using `npm start`
+5. Access on browser using [localhost:3000](localhost:3000)

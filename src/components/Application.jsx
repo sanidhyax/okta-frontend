@@ -10,8 +10,8 @@ const Application = () => {
 
     return (
         <div className="App">
-          <Navbar />
-          {isAuthenticated ? <ProductCatalogue /> : <div className="login-page"><a href="" className="login-text" onClick={()=> loginWithRedirect()}>Please login using <strong><u>Okta Auth0</u></strong></a></div>}
+            <Navbar />
+            {isAuthenticated ? <ProductCatalogue /> : <div className="login-page"><p className="login-text" onClick={() => loginWithRedirect()}>Please login using <strong><u>Okta Auth0</u></strong></p></div>}
         </div>
     )
 }

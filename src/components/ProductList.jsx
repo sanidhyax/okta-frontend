@@ -6,19 +6,19 @@ const ProductList = (props) => {
     const { products } = props
 
     const listProducts = () => {
-        if (products.length > 0){
-            return products.map((p) => <ProductCard key={p.id} product={p}/>)
+        if (products.length > 0) {
+            return products.map((p) => <ProductCard key={p.id} product={p} />)
         } else {
-            return "No Products"
+            return <div className="no-products"> No Products </div>
         }
     }
 
-return (
-    <div className="catalogue">
-        {listProducts()}
-    </div>
-)
-    
+    return (
+        <div className="catalogue">
+            {listProducts()}
+        </div>
+    )
+
 }
 
 export default ProductList

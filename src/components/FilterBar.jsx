@@ -3,11 +3,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Button, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import '../App.css'
 
 export const FilterBar = (props) => {
-    const {brands, categories, activeFilters, handleBrandChange, handleCategoryChange, handleSorting } = props;
+    const { brands, categories, activeFilters, handleBrandChange, handleCategoryChange, handleSorting } = props;
 
 
     const listCategories = () => {

@@ -9,14 +9,14 @@ import { setActiveProduct } from "../redux/actions";
 const ProductCard = (props) => {
     const { images, brand, title, price, discountedPrice, rating, id } = props.product;
     const dispatch = useDispatch();
-    
+
     const handleProductClick = () => {
         dispatch(setActiveProduct(props.product))
     }
 
     return (
         <>
-            <a className="product-card" href="#" onClick={()=>handleProductClick()}>
+            <a className="product-card" href="#" onClick={() => handleProductClick()}>
                 <img className="product-card__image" src={images[0]} />
                 <Rater data-tooltip-id={id} total={5} rating={rating} interactive={false} />
                 <div id="product-card-details">

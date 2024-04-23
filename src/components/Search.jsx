@@ -5,23 +5,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Button } from "@mui/material";;
 
 const Search = (props) => {
-    const {searchParam, handleSearchClick, handleSearchParamChange} = props
+    const { searchParam, handleSearchClear, handleSearchParamChange } = props
 
     return (
         <div id="search-div">
-                <Input
-                    value={searchParam}
-                    onChange={handleSearchParamChange}
-                    placeholder="Local Search..."
-                    fullWidth
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    }
-                />
+            <Input
+                value={searchParam}
+                onChange={handleSearchParamChange}
+                placeholder="Local Search..."
+                fullWidth
+                startAdornment={
+                    <InputAdornment position="start">
+                        <SearchIcon />
+                    </InputAdornment>
+                }
+            />
             <div id='search-button'>
-                <Button variant="contained" onClick={handleSearchClick}>Search</Button>
+                <Button variant="standard" onClick={handleSearchClear}>Clear</Button>
             </div>
         </div>
     )

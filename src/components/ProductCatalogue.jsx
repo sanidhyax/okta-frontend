@@ -3,7 +3,7 @@ import '../App.css';
 import { FilterBar } from "./FilterBar";
 import Pagination from '@mui/material/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCategories, loadProducts, setPageLoading, loadBrands } from "../redux/actions";
+import { loadCategories, loadProducts, setPageLoading, loadBrands, setActiveProduct } from "../redux/actions";
 import ProductList from "./ProductList";
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
@@ -78,7 +78,7 @@ export const ProductCatalogue = () => {
 
     const getProductsByCategoryAndBrand = async (category, brand) => {
         let finalUrl;
-        if (category === '' && brand ===''){
+        if (category === '' && brand === '') {
             finalUrl = url;
         }
         else if (category !== '' && brand !== '') {
@@ -88,131 +88,134 @@ export const ProductCatalogue = () => {
             finalUrl = baseUrlForDummyJson + `/category/${category}`
         }
         else if (brand !== '') {
-            finalUrl = baseUrlForNewEndpoint `/brand/${brand}`
+            finalUrl = baseUrlForNewEndpoint + `/brand/${brand}`
         }
         getProducts(finalUrl, 0, 10)
     }
 
-const getProducts = async (url, skip, limit) => {
-    dispatch(setPageLoading(true));
-    try {
-        const response = await axios.get(url, {
-            params: {
-                limit: limit,
-                skip: skip,
-            }
-        });
-        const data = response.data;
-        var prods = injectDiscountedPrice(data.products)
-        dispatch(loadProducts({ ...data, products: prods }));
-        window.scrollTo(0, 0);
-        setFilteredProducts([...prods]);
+    const getProducts = async (url, skip, limit) => {
+        dispatch(setPageLoading(true));
+        try {
+            const response = await axios.get(url, {
+                params: {
+                    limit: limit,
+                    skip: skip,
+                }
+            });
+            const data = response.data;
+            var prods = injectDiscountedPrice(data.products)
+            dispatch(loadProducts({ ...data, products: prods }));
+            window.scrollTo(0, 0);
+            setFilteredProducts([...prods]);
+            setSearchParam('')
+            dispatch(setPageLoading(false));
+        } catch (e) {
+            setError(true)
+            console.log("SOME ERROR OCCURRED", e)
+        }
+    }
+
+    // const searchProducts = async (url, skip, limit, searchQuery) => {
+    //     dispatch(setPageLoading(true));
+    //     const response = await axios.get(url, {
+    //         params: {
+    //             limit: limit,
+    //             skip: skip,
+    //             q: searchQuery
+    //         }
+    //     });
+    //     const data = response.data;
+    //     console.log(data)
+    //     dispatch(loadProducts(data));
+    //     window.scrollTo(0, 0);
+    //     setFilteredProducts([...data.products]);
+    // };
+
+
+    const sortProducts = (sortBy, prods) => {
+        if (sortBy === 'hightolow') {
+            return prods.sort((a, b) => a.discountedPrice - b.discountedPrice); // Sort low to high
+        } else if (sortBy === 'lowtohigh') {
+            return prods.sort((a, b) => b.discountedPrice - a.discountedPrice); // Sort high to low
+        } else {
+            return prods.sort((a, b) => a.title.localeCompare(b.title));
+        }
+    };
+
+    const handlePageChange = (event, page) => {
+        getProducts(url, (page - 1) * 10, pagination.limit)
+    }
+
+    const handleSorting = (sortBy) => {
+        setActiveFilters({ ...activeFilters, sortBy })
+        setFilteredProducts([...sortProducts(sortBy, filteredProducts)])
+    }
+    const handleBrandChange = (brand) => {
+        setActiveFilters({ ...activeFilters, brand })
+        // filterProducts(brand, activeFilters.category)
+        getProductsByCategoryAndBrand(activeFilters.category, brand)
+    }
+    const handleCategoryChange = (category) => {
+        setActiveFilters({ ...activeFilters, category })
+        // filterProducts(activeFilters.brand, category)
+        getProductsByCategoryAndBrand(category, activeFilters.brand)
+    }
+    const handleSearchParamChange = (param) => {
+        setSearchParam(param)
+        if (param !== '') {
+            const searched = filteredProducts.filter(p => p.title.toLowerCase().includes(param.toLowerCase()));
+            setLocalSearchresults(searched)
+        } else {
+            setLocalSearchresults([])
+        }
+    }
+    const handleSearchClear = () => {
         setSearchParam('')
-        dispatch(setPageLoading(false));
-    } catch (e) {
-        setError(true)
-        console.log("SOME ERROR OCCURRED", e)
     }
-}
 
-// const searchProducts = async (url, skip, limit, searchQuery) => {
-//     dispatch(setPageLoading(true));
-//     const response = await axios.get(url, {
-//         params: {
-//             limit: limit,
-//             skip: skip,
-//             q: searchQuery
-//         }
-//     });
-//     const data = response.data;
-//     console.log(data)
-//     dispatch(loadProducts(data));
-//     window.scrollTo(0, 0);
-//     setFilteredProducts([...data.products]);
-// };
-
-
-const sortProducts = (sortBy, prods) => {
-    if (sortBy === 'hightolow') {
-        return prods.sort((a, b) => a.discountedPrice - b.discountedPrice); // Sort low to high
-    } else if (sortBy === 'lowtohigh') {
-        return prods.sort((a, b) => b.discountedPrice - a.discountedPrice); // Sort high to low
-    } else {
-        return prods.sort((a, b) => a.title.localeCompare(b.title));
+    const filterProducts = (brand, category) => {
+        const classifed = products.filter(p => {
+            if (brand !== "" && p.brand !== brand) return false
+            if (category !== "" && p.category !== category) return false
+            return true
+        })
+        console.log(classifed)
+        setFilteredProducts([...classifed])
     }
-};
 
-const handlePageChange = (event, page) => {
-    getProducts(url, (page - 1) * 10, pagination.limit)
-}
-
-const handleSorting = (sortBy) => {
-    setActiveFilters({ ...activeFilters, sortBy })
-    setFilteredProducts([...sortProducts(sortBy, filteredProducts)])
-}
-const handleBrandChange = (brand) => {
-    setActiveFilters({ ...activeFilters, brand })
-    // filterProducts(brand, activeFilters.category)
-    getProductsByCategoryAndBrand(activeFilters.category, brand)
-}
-const handleCategoryChange = (category) => {
-    setActiveFilters({ ...activeFilters, category })
-    // filterProducts(activeFilters.brand, category)
-    getProductsByCategoryAndBrand(category, activeFilters.brand)
-}
-const handleSearchParamChange = (param) => {
-    setSearchParam(param)
-    if (param !== '') {
-        const searched = filteredProducts.filter(p => p.title.toLowerCase().includes(param.toLowerCase()));
-        setLocalSearchresults(searched)
-    } else {
-        setLocalSearchresults([])
+    const handleProductClose = () => {
+        dispatch(setActiveProduct(null))
     }
-}
-const handleSearchClick = () => {
-    // if (searchParam != '')
-    // searchProducts(url, 0, pagination.limit, searchParam)
-}
 
-const filterProducts = (brand, category) => {
-    const classifed = products.filter(p => {
-        if (brand !== "" && p.brand !== brand) return false
-        if (category !== "" && p.category !== category) return false
-        return true
-    })
-    console.log(classifed)
-    setFilteredProducts([...classifed])
-}
-
-return (
-    <div>
-        <Search searchParam={searchParam}
-            handleSearchParamChange={(e) => handleSearchParamChange(e.target.value)}
-            handleSearchClick={() => handleSearchClick()}
-        />
+    return (
         <div>
-            <FilterBar
-                categories={categories}
-                brands={brands}
-                activeFilters={activeFilters}
-                handleSorting={(val) => handleSorting(val.target.value)}
-                handleCategoryChange={(val) => handleCategoryChange(val.target.value)}
-                handleBrandChange={(val) => handleBrandChange(val.target.value)}
+            <Search searchParam={searchParam}
+                handleSearchParamChange={(e) => handleSearchParamChange(e.target.value)}
+                handleSearchClear={() => handleSearchClear()}
             />
-        </div>
-        {activeProduct ? <SingleProduct product={activeProduct} /> : null}
-        <div>
-            <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
-            {error ? <div>SOME ERROR OCCURRED </div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
-            <div className="pagination">
-                <Pagination
-                    count={Math.ceil(pagination.total / 10)}
-                    onChange={handlePageChange}
+            <div>
+                <FilterBar
+                    categories={categories}
+                    brands={brands}
+                    activeFilters={activeFilters}
+                    handleSorting={(val) => handleSorting(val.target.value)}
+                    handleCategoryChange={(val) => handleCategoryChange(val.target.value)}
+                    handleBrandChange={(val) => handleBrandChange(val.target.value)}
                 />
             </div>
+            {activeProduct ? <SingleProduct product={activeProduct} handleProductClose={handleProductClose} /> : null}
+            <div>
+                <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+                {error ? <div className="login-page"><a href="" className="login-text" onClick={() => getProducts(url, 0, 10)}>Some Error Occurred. <strong><u>Please Refresh.</u></strong></a></div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
+                <div className="pagination">
+                    <Pagination
+                        count={Math.ceil(pagination.total / 10)}
+                        onChange={handlePageChange}
+                    />
+                </div>
+            </div>
         </div>
-    </div>
-)
+    )
 }
