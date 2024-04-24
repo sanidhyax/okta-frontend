@@ -3,7 +3,7 @@ import '../App.css';
 import { FilterBar } from "./FilterBar";
 import Pagination from '@mui/material/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCategories, loadProducts, setPageLoading, loadBrands, setActiveProduct } from "../redux/actions";
+import { loadCategories, loadProducts, setPageLoading, loadBrands, setActiveProduct, setCategoriesLoading, setBrandsLoading } from "../redux/actions";
 import ProductList from "./ProductList";
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
@@ -20,9 +20,7 @@ export const ProductCatalogue = () => {
     }
 
     const dispatch = useDispatch()
-    const products = useSelector((state) => state.products)
-    const categories = useSelector(state => state.categories)
-    const brands = useSelector(state => state.brands)
+    // const products = useSelector((state) => state.products)
     const pagination = useSelector(state => state.pagination)
     const isLoading = useSelector(state => state.isPageLoading)
     const activeProduct = useSelector(state => state.activeProduct)
@@ -41,31 +39,43 @@ export const ProductCatalogue = () => {
 
     useEffect(() => {
         getCategories(categoriesURL)
-        getBrands(brandUrl)
+        getBrands(brandUrl, '')
         console.log(pagination)
         getProducts(url, pagination.skip, pagination.limit)
     }, [])
 
     const getCategories = (url) => {
+        dispatch(setCategoriesLoading(true))
         axios.get(url)
             .then(response => {
                 dispatch(loadCategories(response.data));
             })
             .catch(error => {
                 console.error('Error fetching categories:', error);
-            });
+            }).finally(
+                dispatch(setCategoriesLoading(false))
+            )
     };
 
-    const getBrands = (url) => {
-        axios.get(url)
-            .then(response => {
-                console.log("GETTING")
-                console.log(response.data)
-                dispatch(loadBrands(response.data));
-            })
-            .catch(error => {
-                console.error('Error fetching brands:', error);
-            });
+    const getBrands = (url,c) => {
+        console.log("check" + c)
+        dispatch(setBrandsLoading(true));
+        axios.get(url, {
+            params: {
+                category: c
+            }
+        })
+        .then(response => {
+            console.log("GETTING");
+            console.log(response.data);
+            dispatch(loadBrands(response.data));
+        })
+        .catch(error => {
+            console.error('Error fetching brands:', error);
+        })
+        .finally(() => {
+            dispatch(setBrandsLoading(false));
+        });
     };
 
     const injectDiscountedPrice = (products) => {
@@ -95,6 +105,10 @@ export const ProductCatalogue = () => {
 
     const getProducts = async (url, skip, limit) => {
         dispatch(setPageLoading(true));
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         try {
             const response = await axios.get(url, {
                 params: {
@@ -105,7 +119,6 @@ export const ProductCatalogue = () => {
             const data = response.data;
             var prods = injectDiscountedPrice(data.products)
             dispatch(loadProducts({ ...data, products: prods }));
-            window.scrollTo(0, 0);
             setFilteredProducts([...prods]);
             setSearchParam('')
         } catch (e) {
@@ -157,10 +170,12 @@ export const ProductCatalogue = () => {
         getProductsByCategoryAndBrand(activeFilters.category, brand)
     }
     const handleCategoryChange = (category) => {
-        setActiveFilters({ ...activeFilters, category })
+        setActiveFilters({ ...activeFilters, category, brand:'' })
         // filterProducts(activeFilters.brand, category)
-        getProductsByCategoryAndBrand(category, activeFilters.brand)
+        getProductsByCategoryAndBrand(category, '')
+        getBrands(brandUrl, category)
     }
+
     const handleSearchParamChange = (param) => {
         setSearchParam(param)
         if (param !== '') {
@@ -174,15 +189,15 @@ export const ProductCatalogue = () => {
         setSearchParam('')
     }
 
-    const filterProducts = (brand, category) => {
-        const classifed = products.filter(p => {
-            if (brand !== "" && p.brand !== brand) return false
-            if (category !== "" && p.category !== category) return false
-            return true
-        })
-        console.log(classifed)
-        setFilteredProducts([...classifed])
-    }
+    // const filterProducts = (brand, category) => {
+    //     const classifed = products.filter(p => {
+    //         if (brand !== "" && p.brand !== brand) return false
+    //         if (category !== "" && p.category !== category) return false
+    //         return true
+    //     })
+    //     console.log(classifed)
+    //     setFilteredProducts([...classifed])
+    // }
 
     const handleProductClose = () => {
         dispatch(setActiveProduct(null))
@@ -196,8 +211,6 @@ export const ProductCatalogue = () => {
             />
             <div>
                 <FilterBar
-                    categories={categories}
-                    brands={brands}
                     activeFilters={activeFilters}
                     handleSorting={(val) => handleSorting(val.target.value)}
                     handleCategoryChange={(val) => handleCategoryChange(val.target.value)}
@@ -209,7 +222,7 @@ export const ProductCatalogue = () => {
                 <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
-                {error ? <div className="login-page"><a href="" className="login-text" onClick={() => getProducts(url, 0, 10)}>Some Error Occurred. <strong><u>Please Refresh.</u></strong></a></div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
+                {error ? <div className="login-page"><p style={{cursor:'pointer'}} className="login-text" onClick={() => getProducts(url, 0, 10)}>Some Error Occurred. <strong><u>Please Refresh.</u></strong></p></div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
                 <div className="pagination">
                     <Pagination
                         count={Math.ceil(pagination.total / 10)}

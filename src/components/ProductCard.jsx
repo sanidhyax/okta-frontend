@@ -12,11 +12,16 @@ const ProductCard = (props) => {
 
     const handleProductClick = () => {
         dispatch(setActiveProduct(props.product))
+        // Handle scroll using scrollIntoView to keep it responsive
+        window.scrollTo({
+            top: 200,
+            behavior: 'smooth'
+          });
     }
 
     return (
         <>
-            <a className="product-card" href="#" onClick={() => handleProductClick()}>
+            <div className="product-card" href="#" onClick={() => handleProductClick()}>
                 <img className="product-card__image" src={images[0]} />
                 <Rater data-tooltip-id={id} total={5} rating={rating} interactive={false} />
                 <div id="product-card-details">
@@ -29,7 +34,7 @@ const ProductCard = (props) => {
                         <p id="product-card__price">${discountedPrice}</p>
                     </div>
                 </div>
-            </a>
+            </div>
             <ReactTooltip
                 id={id}
                 place="bottom"

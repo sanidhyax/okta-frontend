@@ -5,10 +5,14 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import '../App.css'
+import { useSelector } from "react-redux";
 
 export const FilterBar = (props) => {
-    const { brands, categories, activeFilters, handleBrandChange, handleCategoryChange, handleSorting } = props;
-
+    const brands = useSelector(state => state.brands)
+    const categories = useSelector(state => state.categories)
+    const isCategoriesLoading = useSelector(state => state.isCategoriesLoading)
+    const isBrandsLoading = useSelector(state => state.isBrandsLoading)
+    const { activeFilters, handleBrandChange, handleCategoryChange, handleSorting } = props;
 
     const listCategories = () => {
         if (categories.length > 0) {
@@ -58,7 +62,7 @@ export const FilterBar = (props) => {
                         label="Category"
                     >
                         <MenuItem value="">
-                            <em>None</em>
+                            {isCategoriesLoading ? <em>Loading...</em> : <em>None</em>}
                         </MenuItem>
                         {listCategories()}
                     </Select>
@@ -73,7 +77,7 @@ export const FilterBar = (props) => {
                         label="Brand"
                     >
                         <MenuItem value="">
-                            <em>None</em>
+                        {isBrandsLoading ? <em>Loading...</em> : <em>None</em>}
                         </MenuItem>
                         {listBrands()}
                     </Select>

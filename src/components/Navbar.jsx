@@ -16,7 +16,7 @@ export const Navbar = () => {
 
 	const authButton = () => {
 		if (!isAuthenticated) {
-			return <li><a href="" onClick={() => loginWithRedirect()}>Login</a></li>
+			return <li><p style={{cursor:"pointer"}} onClick={() => loginWithRedirect()}>Login</p></li>
 		} else {
 			return <li><strong>{user.name}</strong><a href="" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}> - Logout</a></li>
 		}

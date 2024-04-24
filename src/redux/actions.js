@@ -4,6 +4,8 @@ export const LOAD_BRANDS = "LOAD_BRANDS"
 export const PAGE_LOADING = "PRODUCTS_LOADING"
 export const SET_FILTERED_PRODUCTS = "SET_FILTERED_PRODUCTS"
 export const SET_ACTIVE_PRODUCT = "SET_ACTIVE_PRODUCT"
+export const SET_CATEGORIES_LOADING = "SET_CATEGORIES_LOADING"
+export const SET_BRANDS_LOADING = "SET_BRANDS_LOADING"
 
 export const loadProducts = (data) => {
     return {
@@ -28,14 +30,28 @@ export const loadBrands = (brands) => {
 
 export const setPageLoading = (isLoading) => {
     return {
-        type:PAGE_LOADING,
+        type: PAGE_LOADING,
         isLoading
     }
 }
 
 export const setActiveProduct = (product) => {
     return {
-        type:SET_ACTIVE_PRODUCT,
+        type: SET_ACTIVE_PRODUCT,
         product
+    }
+}
+
+export const setCategoriesLoading = (isCategoriesLoading) => {
+    return {
+        type: SET_CATEGORIES_LOADING,
+        isCategoriesLoading
+    }
+}
+
+export const setBrandsLoading = (isBrandsLoading) => {
+    return {
+        type: SET_BRANDS_LOADING,
+        isBrandsLoading
     }
 }

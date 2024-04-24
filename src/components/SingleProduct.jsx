@@ -9,13 +9,13 @@ const SingleProduct = (props) => {
 
     const images = product.images.map(imageUrl => ({
         original: imageUrl,
-        thumbnail: imageUrl, // Assuming you want thumbnails to be the same as original images
+        thumbnail: imageUrl,
     }));
 
 
     return (
-        <section className="description">
-            <hr style={{ width: 100 + 'vw' }} />
+        <section className="description" id={"single-product-section"}>
+            <hr id="scrollToHere" style={{ width: 100 + 'vw' }} />
 
             <div className="image-gallery-div">
                 <ImageGallery items={images} />

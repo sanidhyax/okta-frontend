@@ -1,10 +1,12 @@
-import { LOAD_BRANDS, LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING, SET_ACTIVE_PRODUCT } from "./actions";
+import { LOAD_BRANDS, LOAD_CATEGORIES, LOAD_PRODUCTS, PAGE_LOADING, SET_ACTIVE_PRODUCT, SET_BRANDS_LOADING, SET_CATEGORIES_LOADING } from "./actions";
 
 const initialState = {
     products: [],
     categories: [],
     activeProduct:null,
     brands: [],
+    isBrandsLoading:true,
+    isCategoriesLoading:true,
     isPageLoading:false,
     pagination: {
         total: 0,
@@ -45,6 +47,10 @@ const reducer = (state = initialState, action) => {
             return {...state, brands: action.brands}
         case SET_ACTIVE_PRODUCT:
             return {...state, activeProduct:action.product}
+        case SET_CATEGORIES_LOADING:
+            return {...state, isCategoriesLoading:action.isCategoriesLoading}
+        case SET_BRANDS_LOADING:
+            return {...state, isBrandsLoading:action.isBrandsLoading}
         default:
             return state
     }
