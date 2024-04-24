@@ -29,10 +29,10 @@ const SingleProduct = (props) => {
                     {product.description}
                 </p>
                 <div className="price">
-                    <s>${product.price}</s>
                     <div className="main-tag">
-                        <p>${product.discountedPrice}</p>
-                        <p>{product.discountPercentage}%</p>
+                        <s>${product.price}</s>
+                        <p> ${product.discountedPrice}</p>
+                        <p style={{color:'red'}}>-{product.discountPercentage}%</p>
                     </div>
                 </div>
             </div>

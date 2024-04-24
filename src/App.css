@@ -272,18 +272,19 @@ a {
 .description .price .main-tag {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 .description .price .main-tag p:first-of-type {
   color: var(--vd-blue);
   font-size: 25px;
   font-weight: 700;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .description .price .main-tag p:last-of-type {
   color: var(--orange);
   background-color: var(--pale-orange);
-  padding: 3px 10px;
   border-radius: 5px;
   font-weight: 700;
 }
