@@ -7,21 +7,34 @@ import Rater from "react-rater";
 const SingleProduct = (props) => {
     const { product, handleProductClose } = props;
 
-    const images = product.images.map(imageUrl => ({
+    const mapImagesForGallary = (images) => {
+    return images.map(imageUrl => ({
         original: imageUrl,
         thumbnail: imageUrl,
     }));
+    }
 
+    console.log(product)
 
+    if (product === 0) {
+        return (
+            <section className="description" id={"single-product-section"}>
+            <hr id="scrollToHere" style={{ width: 100 + 'vw' }} />
+            <p className="main-tag" style={{color:'red'}}>Error in fetching product</p>
+            <div className="close-button"> <Button variant="contained" onClick={() => handleProductClose()}>Close</Button></div>
+            <hr style={{ width: 100 + 'vw' }} />
+            </section>
+        )
+    } else {
     return (
+        
         <section className="description" id={"single-product-section"}>
             <hr id="scrollToHere" style={{ width: 100 + 'vw' }} />
 
             <div className="image-gallery-div">
-                <ImageGallery items={images} />
+                <ImageGallery items={mapImagesForGallary(product.images)} />
             </div>
             <div className="single-product-details-div">
-
                 <Rater total={5} rating={product.rating} interactive={false} /> <p>Rating {product.rating}/5</p>
                 <p className="pre">{product.brand}</p>
                 <h1>{product.title}</h1>
@@ -31,7 +44,7 @@ const SingleProduct = (props) => {
                 <div className="price">
                     <div className="main-tag">
                         <s>${product.price}</s>
-                        <p> ${product.discountedPrice}</p>
+                        <p> ${parseFloat(product.price - (product.discountPercentage / 100) * product.price).toFixed(2)}</p>
                         <p style={{color:'red'}}>-{product.discountPercentage}%</p>
                     </div>
                 </div>
@@ -40,6 +53,7 @@ const SingleProduct = (props) => {
             <hr style={{ width: 100 + 'vw' }} />
         </section>
     );
+    }
 };
 
 export default SingleProduct;
