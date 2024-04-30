@@ -46,7 +46,6 @@ export const ProductCatalogue = () => {
     useEffect(() => {
         getCategories(categoriesURL)
         getBrands(brandUrl, '')
-        console.log(pagination)
         getProducts(baseUrlForProducts, pagination.skip, pagination.limit)
     }, [])
 
@@ -63,12 +62,11 @@ export const ProductCatalogue = () => {
             )
     };
 
-    const getBrands = (url, c) => {
-        console.log("check" + c)
+    const getBrands = (url, category) => {
         dispatch(setBrandsLoading(true));
         axios.get(url, {
             params: {
-                category: c
+                category: category
             }
         })
             .then(response => {
