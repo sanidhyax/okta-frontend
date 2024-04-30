@@ -11,7 +11,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Search from "./Search";
 import SingleProduct from "./SingleProduct";
 
+export const baseUrlForSingleProduct = "https://dummyjson.com/product"
+export const baseUrlForProducts = "https://dummyjson.com/products"
+
 export const ProductCatalogue = () => {
+
+    const defaultPaginationVal = {
+        limit:10,
+        skip:0
+    }
 
     const defaultFilters = {
         sortBy: 'title',
@@ -31,17 +39,14 @@ export const ProductCatalogue = () => {
     const [localSearchResults, setLocalSearchresults] = useState([])
     const [error, setError] = useState(false)
 
-    const url = "https://dummyjson.com/products"
     const categoriesURL = "https://dummyjson.com/products/categories"
     const brandUrl = "https://extenddummyjson-latest.onrender.com/products/brands"
     const baseUrlForNewEndpoint = "https://extenddummyjson-latest.onrender.com/products"
-    const baseUrlForDummyJson = "https://dummyjson.com/products"
 
     useEffect(() => {
         getCategories(categoriesURL)
         getBrands(brandUrl, '')
-        console.log(pagination)
-        getProducts(url, pagination.skip, pagination.limit)
+        getProducts(baseUrlForProducts, pagination.skip, pagination.limit)
     }, [])
 
     const getCategories = (url) => {
@@ -57,50 +62,41 @@ export const ProductCatalogue = () => {
             )
     };
 
-    const getBrands = (url,c) => {
-        console.log("check" + c)
+    const getBrands = (url, category) => {
         dispatch(setBrandsLoading(true));
         axios.get(url, {
             params: {
-                category: c
+                category: category
             }
         })
-        .then(response => {
-            console.log("GETTING");
-            console.log(response.data);
-            dispatch(loadBrands(response.data));
-        })
-        .catch(error => {
-            console.error('Error fetching brands:', error);
-        })
-        .finally(() => {
-            dispatch(setBrandsLoading(false));
-        });
+            .then(response => {
+                console.log("GETTING");
+                console.log(response.data);
+                dispatch(loadBrands(response.data));
+            })
+            .catch(error => {
+                console.error('Error fetching brands:', error);
+            })
+            .finally(() => {
+                dispatch(setBrandsLoading(false));
+            });
     };
-
-    const injectDiscountedPrice = (products) => {
-        return products.map(p => {
-            const discountedPrice = p.price - ((p.discountPercentage / 100) * p.price);
-            const num = parseFloat(discountedPrice.toFixed(2)); // Round to 2 digits
-            return { ...p, discountedPrice: num };
-        })
-    }
 
     const getProductsByCategoryAndBrand = async (category, brand) => {
         let finalUrl;
         if (category === '' && brand === '') {
-            finalUrl = url;
+            finalUrl = baseUrlForProducts;
         }
         else if (category !== '' && brand !== '') {
             finalUrl = baseUrlForNewEndpoint + `/category/${category}/brand/${brand}`
         }
         else if (category !== '') {
-            finalUrl = baseUrlForDummyJson + `/category/${category}`
+            finalUrl = baseUrlForProducts + `/category/${category}`
         }
         else if (brand !== '') {
             finalUrl = baseUrlForNewEndpoint + `/brand/${brand}`
         }
-        getProducts(finalUrl, 0, 10)
+        getProducts(finalUrl, defaultPaginationVal.skip, defaultPaginationVal.limit)
     }
 
     const getProducts = async (url, skip, limit) => {
@@ -145,19 +141,8 @@ export const ProductCatalogue = () => {
     //     setFilteredProducts([...data.products]);
     // };
 
-
-    const sortProducts = (sortBy, prods) => {
-        if (sortBy === 'hightolow') {
-            return prods.sort((a, b) => a.discountedPrice - b.discountedPrice); // Sort low to high
-        } else if (sortBy === 'lowtohigh') {
-            return prods.sort((a, b) => b.discountedPrice - a.discountedPrice); // Sort high to low
-        } else {
-            return prods.sort((a, b) => a.title.localeCompare(b.title));
-        }
-    };
-
     const handlePageChange = (event, page) => {
-        getProducts(url, (page - 1) * 10, pagination.limit)
+        getProducts(baseUrlForProducts, (page - 1) * 10, pagination.limit)
     }
 
     const handleSorting = (sortBy) => {
@@ -166,12 +151,10 @@ export const ProductCatalogue = () => {
     }
     const handleBrandChange = (brand) => {
         setActiveFilters({ ...activeFilters, brand })
-        // filterProducts(brand, activeFilters.category)
         getProductsByCategoryAndBrand(activeFilters.category, brand)
     }
     const handleCategoryChange = (category) => {
-        setActiveFilters({ ...activeFilters, category, brand:'' })
-        // filterProducts(activeFilters.brand, category)
+        setActiveFilters({ ...activeFilters, category, brand: '' })
         getProductsByCategoryAndBrand(category, '')
         getBrands(brandUrl, category)
     }
@@ -189,19 +172,27 @@ export const ProductCatalogue = () => {
         setSearchParam('')
     }
 
-    // const filterProducts = (brand, category) => {
-    //     const classifed = products.filter(p => {
-    //         if (brand !== "" && p.brand !== brand) return false
-    //         if (category !== "" && p.category !== category) return false
-    //         return true
-    //     })
-    //     console.log(classifed)
-    //     setFilteredProducts([...classifed])
-    // }
+    const injectDiscountedPrice = (products) => {
+        return products.map(p => {
+            const discountedPrice = p.price - ((p.discountPercentage / 100) * p.price);
+            const num = parseFloat(discountedPrice.toFixed(2)); // Round to 2 digits
+            return { ...p, discountedPrice: num };
+        })
+    }
 
     const handleProductClose = () => {
         dispatch(setActiveProduct(null))
     }
+
+    const sortProducts = (sortBy, prods) => {
+        if (sortBy === 'hightolow') {
+            return prods.sort((a, b) => a.discountedPrice - b.discountedPrice); // Sort low to high
+        } else if (sortBy === 'lowtohigh') {
+            return prods.sort((a, b) => b.discountedPrice - a.discountedPrice); // Sort high to low
+        } else {
+            return prods.sort((a, b) => a.title.localeCompare(b.title));
+        }
+    };
 
     return (
         <div>
@@ -217,13 +208,21 @@ export const ProductCatalogue = () => {
                     handleBrandChange={(val) => handleBrandChange(val.target.value)}
                 />
             </div>
-            {activeProduct ? <SingleProduct product={activeProduct} handleProductClose={handleProductClose} /> : null}
+            {activeProduct !== null ? <SingleProduct product={activeProduct} handleProductClose={handleProductClose} /> : null}
             <div>
                 <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
-                {error ? <div className="login-page"><p style={{cursor:'pointer'}} className="login-text" onClick={() => getProducts(url, 0, 10)}>Some Error Occurred. <strong><u>Please Refresh.</u></strong></p></div> : <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
+                
+                {error ?
+                    <div className="login-page">
+                        <p style={{ cursor: 'pointer' }} className="login-text" onClick={() => getProducts(baseUrlForProducts, defaultPaginationVal.skip, defaultPaginationVal.limit)}>Some Error Occurred. <strong><u>Please Refresh.</u></strong>
+                        </p>
+                    </div>
+                    :
+                    <ProductList products={sortProducts(activeFilters.sortBy, searchParam.length > 0 ? localSearchResults : filteredProducts)} />}
                 <div className="pagination">
+
                     <Pagination
                         count={Math.ceil(pagination.total / 10)}
                         onChange={handlePageChange}
