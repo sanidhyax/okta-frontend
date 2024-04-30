@@ -15,15 +15,6 @@ const initialState = {
     }
 }
 
-// const injectDiscountedPrice = (products) => {
-//     return products.map(p => {
-//     const discountedPrice = p.price - ((p.discountPercentage / 100) * p.price);
-//     const num = parseFloat(discountedPrice.toFixed(2)); // Round to 2 digits
-//     return {...p, discountedPrice: num};
-//     })
-// }
-
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_PRODUCTS:

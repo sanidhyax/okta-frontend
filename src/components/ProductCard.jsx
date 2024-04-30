@@ -4,15 +4,20 @@ import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useDispatch } from "react-redux";
-import { setActiveProduct } from "../redux/actions";
+import { setActiveProduct, setPageLoading } from "../redux/actions";
+import { fetchSingleProduct } from "./AxiosService";
+import { baseUrlForSingleProduct } from "./ProductCatalogue";
 
 const ProductCard = (props) => {
     const { images, brand, title, price, discountedPrice, rating, id } = props.product;
     const dispatch = useDispatch();
 
-    const handleProductClick = () => {
-        dispatch(setActiveProduct(props.product))
-        // Handle scroll using scrollIntoView to keep it responsive
+    const handleProductClick = async (productId) => {
+        dispatch(setPageLoading(true))
+        const activeProd = await fetchSingleProduct(baseUrlForSingleProduct, id)
+        console.log(activeProd)
+        dispatch(setActiveProduct(activeProd))
+        dispatch(setPageLoading(false))
         window.scrollTo({
             top: 200,
             behavior: 'smooth'
