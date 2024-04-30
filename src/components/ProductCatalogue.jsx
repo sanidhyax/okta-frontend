@@ -10,7 +10,6 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Search from "./Search";
 import SingleProduct from "./SingleProduct";
-import GlobalSearch from "./GlobalSearch";
 
 export const baseUrlForSingleProduct = "https://dummyjson.com/product"
 export const baseUrlForProducts = "https://dummyjson.com/products"
@@ -183,10 +182,6 @@ export const ProductCatalogue = () => {
         })
     }
 
-    const resetCategoryAndBrand = () => {
-        setActiveFilters({...activeFilters, category:defaultFilters.category, brand:defaultFilters.brand})
-    }
-
     const handleProductClose = () => {
         dispatch(setActiveProduct(null))
     }
@@ -207,7 +202,6 @@ export const ProductCatalogue = () => {
                 handleSearchParamChange={(e) => handleSearchParamChange(e.target.value)}
                 handleSearchClear={() => handleSearchClear()}
             />
-            <GlobalSearch resetCategoryAndBrand={()=>resetCategoryAndBrand()} getProductsBySearch={(searchUrl) => getProducts(searchUrl, defaultPaginationVal.skip, defaultPaginationVal.limit)}/>
             <div>
                 <FilterBar
                     activeFilters={activeFilters}
