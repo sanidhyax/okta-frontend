@@ -99,53 +99,52 @@ a {
   margin: 25px;
 }
 
+.product-card-image-div{
+  width: auto; 
+  height: 200px; 
+  overflow: hidden;
+}
+
 .product-card__image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  display: block; 
 }
 
-.product-card__description,
-.product-card__price,
-.product-card__brand {
-  margin: 0.2rem 0;
-  font-size: 1rem;
+.product-card-rater {
+  margin: 5px 0 5px 0
 }
 
+
 .product-card__brand {
+  margin: 5px 0 5px 0;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 0.8rem;
   color: grey;
 }
 
+.product-card-price-div p {
+  margin: 5px 0 5px 0;
+}
+
 .product-card__title {
+  margin: 5px 0 5px 0;
   font-weight: normal;
   font-size: 1.2rem;
-
+  
 }
 
-#product-card__price {
+.product-card__price {
   font-weight: bold;
   font-size: 1.5rem;
+  color: black;
 }
 
-#product-card__fullprice {
+.product-card__fullprice {
   font-weight: bold;
-  font-size: 1rem;  
+  font-size: 0.9rem;  
   color: red;
-}
-
-.product-card__btn-wishlist {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  border: none;
-  background-color: white;
-  padding: 12px 10px 10px;
-  box-shadow: 2px 2px 5px 0px rgba(0, 64, 128, 0.1);
 }
 
 .product-card__btn-wishlist svg {
@@ -153,7 +152,7 @@ a {
 }
 
 
-#product-card-details {
+.product-card-details {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -161,10 +160,14 @@ a {
   flex-wrap: wrap;
   flex-direction: row;
   width: 90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .product-card-name-div{
+  align-items: center;
   max-width: 60%;
+  text-align: left;
 }
 
 .filter-bar {

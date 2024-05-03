@@ -27,16 +27,20 @@ const ProductCard = (props) => {
     return (
         <>
             <div className="product-card" href="#" onClick={() => handleProductClick()}>
+                <div className="product-card-image-div">
                 <img className="product-card__image" src={images[0]} />
-                <Rater data-tooltip-id={id} total={5} rating={rating} interactive={false} />
-                <div id="product-card-details">
+                </div>
+                <div className="product-card-rater">
+                    <Rater data-tooltip-id={id} total={5} rating={rating} interactive={false} />
+                    </div>
+                    <div className="product-card-details">
                     <div className="product-card-name-div">
                         <p className="product-card__brand">{brand}</p>
                         <p className="product-card__title">{title}</p>
                     </div>
                     <div className="product-card-price-div">
-                        <p id="product-card__fullprice">$<s>{price}</s></p>
-                        <p id="product-card__price">${discountedPrice}</p>
+                        <p className="product-card__fullprice">$<s>{price}</s></p>
+                        <p className="product-card__price">${discountedPrice}</p>
                     </div>
                 </div>
             </div>
