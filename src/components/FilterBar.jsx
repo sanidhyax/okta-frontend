@@ -35,8 +35,8 @@ export const FilterBar = (props) => {
     }
 
     return (
-        <div className="filter-bar">
-            <div>
+        <div id="filter-bar">
+            <div id='sorting-radios-div'>
                 <FormControl>
                     <FormLabel id="sorting-radios">Sort by</FormLabel>
                     <RadioGroup
@@ -51,7 +51,7 @@ export const FilterBar = (props) => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <div>
+            <div className='dropdowns-div'>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 180 }}>
                     <InputLabel id="category-select">Category</InputLabel>
                     <Select

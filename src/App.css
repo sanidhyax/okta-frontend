@@ -29,6 +29,10 @@ a {
   animation-timing-function: ease-out;
 } */
 
+#product-catalogue {
+  padding-top: 90px;
+}
+
 .logo-aura {
   display: flex;
   justify-content: center; /* Horizontally centers items */
@@ -40,6 +44,10 @@ a {
 }
 
 .main-nav {
+  z-index: 10;
+  width: 100%;
+  position: fixed;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -170,9 +178,26 @@ a {
   text-align: left;
 }
 
-.filter-bar {
+
+
+#filter-bar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+#sorting-radios-div {
+  margin: 0 15px 0 15px
+}
+
+.dropdowns-div {
+  display: flex;
+  margin: 0 15px 0 15px
+}
+
+@media (max-width: 768px) {
+  .dropdowns-div {
+    flex-direction: column;
+  }
 }
 
 .pagination {
@@ -181,18 +206,59 @@ a {
   margin-bottom: 20px;
 }
 
+
+#parent-search-div {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  #parent-search-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  } 
+}
+
 #search-div {
-  justify-content: center;
+  width: 30%;
   display: flex;
   margin-left: 20px;
   margin-right: 20px;
+  align-items: center;
 }
 
+@media (max-width: 768px) {
+  #search-div {
+    width: 95%;
+    margin: 15px;
+    margin-top: 5px;
+  }
+}
+
+
 #search-button {
+  display: flex;
   margin-left: 10px;
   margin-right: 10px;
 }
 
+#global-search {
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px 0 10px;
+}
+
+@media (max-width: 768px) {
+  #global-search {
+    width: 95%;
+    margin: 5px;
+  }
+}
 
 .description {
   flex-basis: 100%;
