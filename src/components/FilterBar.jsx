@@ -52,7 +52,7 @@ export const FilterBar = (props) => {
                 </FormControl>
             </div>
             <div className='dropdowns-div'>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 180 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 150, maxWidth: 220 }}>
                     <InputLabel id="category-select">Category</InputLabel>
                     <Select
                         labelId="category-select"
@@ -67,7 +67,7 @@ export const FilterBar = (props) => {
                         {listCategories()}
                     </Select>
                 </FormControl>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 180 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 150, maxWidth: 220 }}>
                     <InputLabel id="brand-select">Brand</InputLabel>
                     <Select
                         labelId="brand-select"

@@ -31,8 +31,8 @@ const GlobalSearch = (props) => {
     };
   };
 
+    // const debouncedFetch = useMemo(() => debounce(fetch, 500), []);
   const debouncedFetch = debounce(fetch, 500);
-  // const debouncedFetch = useMemo(() => debounce(fetch,500),[],);
 
   const handleChange = (query) => {
     // setInputValue(query)
@@ -42,7 +42,7 @@ const GlobalSearch = (props) => {
     debouncedFetch(url);
   };
 
-  const handleOnChange = (val) => {
+  const handleOnChange = (event, val) => {
     setValue(val);
     resetCategoryAndBrand();
     if (val === '' || val === null) {
@@ -51,6 +51,8 @@ const GlobalSearch = (props) => {
       const url = baseUrlForProducts + `/search?q=${val}`;
       getProductsBySearch(url);
     }
+    // const inputField = document.getElementById('global-search').querySelector('input');
+    // inputField.blur();
   };
 
   return (
@@ -61,13 +63,14 @@ const GlobalSearch = (props) => {
         fullWidth
         options={options}
         autoComplete
+        blurOnSelect={true}
         freeSolo
         includeInputInList
         renderInput={(params) => <TextField {...params} label='Global Search (In development)' margin='normal' />}
         value={value}
         noOptionsText='No Products'
         onChange={(event, newValue) => {
-          handleOnChange(newValue);
+          handleOnChange(event, newValue);
         }}
         onInputChange={(event, newInputValue) => {
           handleChange(newInputValue);

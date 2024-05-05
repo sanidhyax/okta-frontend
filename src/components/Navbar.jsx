@@ -28,14 +28,16 @@ export const Navbar = () => {
 				<div className="logo-aura">
 					<img src={Aura} />
 				</div>
-				<div>
+				<div className='page-title-div'>
+					<h1 className='page-title'>Product Catalogue</h1>
+					<p className='page-subtitle'>Rudimentary product page by Sanidhya Jain</p>
+					</div>
+					<div className='navbar-links-div'>
 					<ul id="navbar-links">
 						{authButton()}
 					</ul>
 				</div>
-				<div id="mobile" onClick={handleSideBarClick}>
-					<i className={sideBarOpen ? "fas fa-times" : "fas fa-bars"} />
-				</div>
+
 			</nav>
 		</div>
 	)

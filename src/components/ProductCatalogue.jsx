@@ -225,7 +225,7 @@ export const ProductCatalogue = () => {
           handleBrandChange={(val) => handleBrandChange(val.target.value)}
         />
       </div>
-      {activeProduct !== null ? <SingleProduct product={activeProduct} handleProductClose={handleProductClose} /> : null}
+      {activeProduct !== null ? <div id="single-product-div"><SingleProduct product={activeProduct} handleProductClose={handleProductClose} /> </div> : null}
       <div>
         <Backdrop open={isLoading} style={{ zIndex: 999, color: '#fff' }}>
           <CircularProgress color='inherit' />

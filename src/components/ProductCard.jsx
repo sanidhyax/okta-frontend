@@ -19,7 +19,7 @@ const ProductCard = (props) => {
         dispatch(setActiveProduct(activeProd))
         dispatch(setPageLoading(false))
         window.scrollTo({
-            top: 200,
+            top: 155,
             behavior: 'smooth'
           });
     }
