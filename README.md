@@ -5,7 +5,7 @@ Web Application built on React+Redux
 Access it on [https://cosmic-druid-28d7d7.netlify.app/](https://cosmic-druid-28d7d7.netlify.app/)  
 
 ## Overview  
-This is a basic products catalogue display with categories and brands filtering and a local search feature.
+This is a basic products catalogue display with categories and brands filtering along with a local and global search feature.
 The product details can be viewed by clicking the product card.  
 
 The application consumes two different service endpoints to get the required data to fit in with the assessment task. 
