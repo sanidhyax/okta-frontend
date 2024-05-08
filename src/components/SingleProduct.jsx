@@ -32,7 +32,7 @@ const SingleProduct = (props) => {
             <hr id="scrollToHere" style={{ width: 100 + 'vw' }} />
 
             <div className="image-gallery-div">
-                <ImageGallery items={mapImagesForGallary(product.images)} />
+                <ImageGallery items={mapImagesForGallary(product.images)} thumbnailHeight="100px" />
             </div>
             <div className="single-product-details-div">
                 <Rater total={5} rating={product.rating} interactive={false} /> <p>Rating {product.rating}/5</p>
